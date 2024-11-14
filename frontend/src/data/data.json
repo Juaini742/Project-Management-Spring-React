@@ -1,0 +1,498 @@
+{
+  "user": {
+    "id": "123e4567-e89b-12d3-a456-426614174000",
+    "email": "user1@example.com",
+    "password": "hashed_password",
+    "created_at": "2024-01-01T12:00:00Z",
+    "updated_at": "2024-01-02T12:00:00Z",
+    "friends": [
+      {
+        "id": "f1d6e7a8-e24b-11d2-b7e7-426655440000",
+        "friend_id": "f1a5b2c3-d4e6-11e5-b6e7-123457770001",
+        "status": "ACCEPTED",
+        "created_at": "2024-01-05T12:00:00Z"
+      },
+      {
+        "id": "e6f8a1b4-d24b-12d2-a3e7-426655890001",
+        "friend_id": "d2e5b2c3-c4e6-11d5-b6e7-123457770002",
+        "status": "PENDING",
+        "created_at": "2024-01-06T14:30:00Z"
+      }
+    ],
+    "chats": [
+      {
+        "id": "987f6543-e89b-12d3-a456-426614174001",
+        "type": "USER-TO-USER",
+        "sender_id": "123e4567-e89b-12d3-a456-426614174000",
+        "receiver_id": "f1a5b2c3-d4e6-11e5-b6e7-123457770001",
+        "name": "John Doe",
+        "messages": [
+          {
+            "message_id": "msg-001",
+            "message": "Hello! How are you?",
+            "send_at": "2024-01-07T15:00:00Z"
+          },
+          {
+            "message_id": "msg-002",
+            "message": "I'm doing well, thank you!",
+            "send_at": "2024-01-07T15:02:00Z"
+          },
+          {
+            "message_id": "msg-001",
+            "message": "Hello! How are you?",
+            "send_at": "2024-01-07T15:00:00Z"
+          },
+          {
+            "message_id": "msg-002",
+            "message": "I'm doing well, thank you!",
+            "send_at": "2024-01-07T15:02:00Z"
+          },
+          {
+            "message_id": "msg-001",
+            "message": "Hello! How are you?",
+            "send_at": "2024-01-07T15:00:00Z"
+          },
+          {
+            "message_id": "msg-002",
+            "message": "I'm doing well, thank you!",
+            "send_at": "2024-01-07T15:02:00Z"
+          },
+          {
+            "message_id": "msg-001",
+            "message": "Hello! How are you?",
+            "send_at": "2024-01-07T15:00:00Z"
+          },
+          {
+            "message_id": "msg-002",
+            "message": "I'm doing well, thank you!",
+            "send_at": "2024-01-07T15:02:00Z"
+          }
+        ]
+      },
+      {
+        "id": "123d5678-e89b-12d3-b456-426614174002",
+        "type": "USER-TO-USER",
+        "sender_id": "123e4567-e89b-12d3-a456-426614174000",
+        "receiver_id": "f2b3c4d5-d4e6-11e5-b6e7-123457770003",
+        "name": "Alice Angle",
+        "messages": [
+          {
+            "message_id": "msg-003",
+            "message": "Did you finish the project?",
+            "send_at": "2024-01-07T16:00:00Z"
+          },
+          {
+            "message_id": "msg-004",
+            "message": "Yes, I just sent it to the manager.",
+            "send_at": "2024-01-07T16:05:00Z"
+          },
+          {
+            "message_id": "msg-001",
+            "message": "Hello! How are you?",
+            "send_at": "2024-01-07T15:00:00Z"
+          },
+          {
+            "message_id": "msg-002",
+            "message": "I'm doing well, thank you!",
+            "send_at": "2024-01-07T15:02:00Z"
+          },
+          {
+            "message_id": "msg-001",
+            "message": "Hello! How are you?",
+            "send_at": "2024-01-07T15:00:00Z"
+          },
+          {
+            "message_id": "msg-002",
+            "message": "I'm doing well, thank you!",
+            "send_at": "2024-01-07T15:02:00Z"
+          }
+        ]
+      },
+      {
+        "id": "345d6789-e89b-12d3-c456-426614174003",
+        "type": "USER-TO-USER",
+        "sender_id": "123e4567-e89b-12d3-a456-426614174000",
+        "receiver_id": "f3c4d5e6-d4e6-11e5-b6e7-123457770004",
+        "name": "Alexa",
+        "messages": [
+          {
+            "message_id": "msg-005",
+            "message": "Are we still on for the meeting tomorrow?",
+            "send_at": "2024-01-07T17:00:00Z"
+          },
+          {
+            "message_id": "msg-006",
+            "message": "Yes, looking forward to it.",
+            "send_at": "2024-01-07T17:02:00Z"
+          },
+          {
+            "message_id": "msg-005",
+            "message": "Are we still on for the meeting tomorrow?",
+            "send_at": "2024-01-07T17:00:00Z"
+          },
+          {
+            "message_id": "msg-006",
+            "message": "Yes, looking forward to it.",
+            "send_at": "2024-01-07T17:02:00Z"
+          },
+          {
+            "message_id": "msg-005",
+            "message": "Are we still on for the meeting tomorrow?",
+            "send_at": "2024-01-07T17:00:00Z"
+          },
+          {
+            "message_id": "msg-006",
+            "message": "Yes, looking forward to it.",
+            "send_at": "2024-01-07T17:02:00Z"
+          }
+        ]
+      },
+      {
+        "id": "456d789a-e89b-12d3-d456-426614174004",
+        "type": "USER-TO-USER",
+        "sender_id": "123e4567-e89b-12d3-a456-426614174000",
+        "receiver_id": "f4d5e6f7-d4e6-11e5-b6e7-123457770005",
+        "name": "Vern",
+        "messages": [
+          {
+            "message_id": "msg-007",
+            "message": "Happy birthday!",
+            "send_at": "2024-01-07T18:00:00Z"
+          },
+          {
+            "message_id": "msg-008",
+            "message": "Thank you!",
+            "send_at": "2024-01-07T18:01:00Z"
+          },
+          {
+            "message_id": "msg-005",
+            "message": "Are we still on for the meeting tomorrow?",
+            "send_at": "2024-01-07T17:00:00Z"
+          },
+          {
+            "message_id": "msg-006",
+            "message": "Yes, looking forward to it.",
+            "send_at": "2024-01-07T17:02:00Z"
+          },
+          {
+            "message_id": "msg-005",
+            "message": "Are we still on for the meeting tomorrow?",
+            "send_at": "2024-01-07T17:00:00Z"
+          },
+          {
+            "message_id": "msg-006",
+            "message": "Yes, looking forward to it.",
+            "send_at": "2024-01-07T17:02:00Z"
+          }
+        ]
+      },
+      {
+        "id": "567d89ab-e89b-12d3-e456-426614174005",
+        "type": "USER-TO-USER",
+        "sender_id": "123e4567-e89b-12d3-a456-426614174000",
+        "receiver_id": "f5e6f7g8-d4e6-11e5-b6e7-123457770006",
+        "name": "John Alex",
+        "messages": [
+          {
+            "message_id": "msg-009",
+            "message": "Can you send me the report?",
+            "send_at": "2024-01-07T19:00:00Z"
+          },
+          {
+            "message_id": "msg-010",
+            "message": "Sure, I’ll email it to you now.",
+            "send_at": "2024-01-07T19:05:00Z"
+          },
+          {
+            "message_id": "msg-005",
+            "message": "Are we still on for the meeting tomorrow?",
+            "send_at": "2024-01-07T17:00:00Z"
+          },
+          {
+            "message_id": "msg-006",
+            "message": "Yes, looking forward to it.",
+            "send_at": "2024-01-07T17:02:00Z"
+          },
+          {
+            "message_id": "msg-005",
+            "message": "Are we still on for the meeting tomorrow?",
+            "send_at": "2024-01-07T17:00:00Z"
+          },
+          {
+            "message_id": "msg-006",
+            "message": "Yes, looking forward to it.",
+            "send_at": "2024-01-07T17:02:00Z"
+          },
+          {
+            "message_id": "msg-005",
+            "message": "Are we still on for the meeting tomorrow?",
+            "send_at": "2024-01-07T17:00:00Z"
+          },
+          {
+            "message_id": "msg-006",
+            "message": "Yes, looking forward to it.",
+            "send_at": "2024-01-07T17:02:00Z"
+          }
+        ]
+      },
+      {
+        "id": "654f321a-b89c-23d4-c567-526714175002",
+        "type": "GROUP",
+        "group_id": "c2b3a4d5-e89b-12d3-b456-426615174003",
+        "name": "LEARN CODING",
+        "messages": [
+          {
+            "message_id": "msg-011",
+            "sender_name": "Alex",
+            "message": "Welcome to the group chat!",
+            "send_at": "2024-01-08T18:00:00Z"
+          },
+          {
+            "message_id": "msg-012",
+            "sender_name": "Bella",
+            "message": "Thanks for adding me!",
+            "send_at": "2024-01-08T18:05:00Z"
+          },
+          {
+            "message_id": "msg-013",
+            "sender_name": "Charlie",
+            "message": "Happy to be here!",
+            "send_at": "2024-01-08T18:10:00Z"
+          },
+          {
+            "message_id": "msg-014",
+            "sender_name": "Dana",
+            "message": "Hello everyone!",
+            "send_at": "2024-01-08T18:15:00Z"
+          },
+          {
+            "message_id": "msg-015",
+            "sender_name": "Alex",
+            "message": "Let's start with some basic coding tips.",
+            "send_at": "2024-01-08T18:20:00Z"
+          },
+          {
+            "message_id": "msg-016",
+            "sender_name": "Ethan",
+            "message": "Great idea! I’m here to learn as much as I can.",
+            "send_at": "2024-01-08T18:25:00Z"
+          },
+          {
+            "message_id": "msg-017",
+            "sender_name": "Bella",
+            "message": "Could we go over the basics of JavaScript first?",
+            "send_at": "2024-01-08T18:30:00Z"
+          },
+          {
+            "message_id": "msg-018",
+            "sender_name": "Alex",
+            "message": "Sure, let’s start with variables and functions.",
+            "send_at": "2024-01-08T18:35:00Z"
+          }
+        ]
+      },
+      {
+        "id": "765g432b-b89c-23d4-d678-627814176003",
+        "type": "GROUP",
+        "group_id": "d3b4a5e6-e89b-12d3-b456-426615174004",
+        "name": "Javascript",
+        "messages": [
+          {
+            "message_id": "msg-021",
+            "sender_name": "Alex",
+            "message": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. ",
+            "send_at": "2024-01-09T10:00:00Z"
+          },
+          {
+            "message_id": "msg-022",
+            "sender_name": "Zara",
+            "message": "Looking forward to it!",
+            "send_at": "2024-01-09T10:05:00Z"
+          },
+          {
+            "message_id": "msg-023",
+            "sender_name": "Michael",
+            "message": "Can we cover the basics of ES6?",
+            "send_at": "2024-01-09T10:10:00Z"
+          },
+          {
+            "message_id": "msg-024",
+            "sender_name": "Sophie",
+            "message": "Yes, I’d like to learn about arrow functions.",
+            "send_at": "2024-01-09T10:15:00Z"
+          },
+          {
+            "message_id": "msg-025",
+            "sender_name": "Alex",
+            "message": "Alright, let’s start with arrow functions and let/const.",
+            "send_at": "2024-01-09T10:20:00Z"
+          },
+          {
+            "message_id": "msg-026",
+            "sender_name": "Zara",
+            "message": "I’ve heard arrow functions don’t have their own `this`. Is that correct?",
+            "send_at": "2024-01-09T10:25:00Z"
+          },
+          {
+            "message_id": "msg-027",
+            "sender_name": "Michael",
+            "message": "Exactly, they inherit `this` from their parent scope.",
+            "send_at": "2024-01-09T10:30:00Z"
+          },
+          {
+            "message_id": "msg-028",
+            "sender_name": "Alex",
+            "message": "Good point, Michael! Let’s also discuss template literals next.",
+            "send_at": "2024-01-09T10:35:00Z"
+          }
+        ]
+      },
+      {
+        "id": "876h543c-b89c-23d4-e789-728914177004",
+        "type": "GROUP",
+        "group_id": "e4c5b6f7-e89b-12d3-b456-426615174005",
+        "name": "Spring Boot",
+        "messages": [
+          {
+            "message_id": "msg-031",
+            "sender_name": "Alex",
+            "message": "Hey team, let's go over the new Spring Boot features.",
+            "send_at": "2024-01-10T09:00:00Z"
+          },
+          {
+            "message_id": "msg-032",
+            "sender_name": "David",
+            "message": "Sure, excited to learn more!",
+            "send_at": "2024-01-10T09:05:00Z"
+          },
+          {
+            "message_id": "msg-033",
+            "sender_name": "Nina",
+            "message": "Can we cover dependency injection? I’m still getting the hang of it.",
+            "send_at": "2024-01-10T09:10:00Z"
+          },
+          {
+            "message_id": "msg-034",
+            "sender_name": "Sarah",
+            "message": "Dependency injection is super useful once you get it!",
+            "send_at": "2024-01-10T09:15:00Z"
+          },
+          {
+            "message_id": "msg-035",
+            "sender_name": "Alex",
+            "message": "Absolutely! Let’s dive into it with a quick example.",
+            "send_at": "2024-01-10T09:20:00Z"
+          },
+          {
+            "message_id": "msg-036",
+            "sender_name": "Michael",
+            "message": "Is this related to the application context in Spring?",
+            "send_at": "2024-01-10T09:25:00Z"
+          },
+          {
+            "message_id": "msg-037",
+            "sender_name": "Alex",
+            "message": "Yes, exactly! Application context manages beans and dependencies.",
+            "send_at": "2024-01-10T09:30:00Z"
+          },
+          {
+            "message_id": "msg-038",
+            "sender_name": "David",
+            "message": "That makes a lot of sense now, thanks!",
+            "send_at": "2024-01-10T09:35:00Z"
+          },
+          {
+            "message_id": "msg-034",
+            "sender_name": "Sarah",
+            "message": "Dependency injection is super useful once you get it!",
+            "send_at": "2024-01-10T09:15:00Z"
+          },
+          {
+            "message_id": "msg-035",
+            "sender_name": "Alex",
+            "message": "Absolutely! Let’s dive into it with a quick example.",
+            "send_at": "2024-01-10T09:20:00Z"
+          },
+          {
+            "message_id": "msg-036",
+            "sender_name": "Michael",
+            "message": "Is this related to the application context in Spring?",
+            "send_at": "2024-01-10T09:25:00Z"
+          },
+          {
+            "message_id": "msg-037",
+            "sender_name": "Alex",
+            "message": "Yes, exactly! Application context manages beans and dependencies.",
+            "send_at": "2024-01-10T09:30:00Z"
+          },
+          {
+            "message_id": "msg-038",
+            "sender_name": "David",
+            "message": "That makes a lot of sense now, thanks!",
+            "send_at": "2024-01-10T09:35:00Z"
+          },
+          {
+            "message_id": "msg-034",
+            "sender_name": "Sarah",
+            "message": "Dependency injection is super useful once you get it!",
+            "send_at": "2024-01-10T09:15:00Z"
+          },
+          {
+            "message_id": "msg-035",
+            "sender_name": "Alex",
+            "message": "Absolutely! Let’s dive into it with a quick example.",
+            "send_at": "2024-01-10T09:20:00Z"
+          },
+          {
+            "message_id": "msg-036",
+            "sender_name": "Michael",
+            "message": "Is this related to the application context in Spring?",
+            "send_at": "2024-01-10T09:25:00Z"
+          },
+          {
+            "message_id": "msg-037",
+            "sender_name": "Alex",
+            "message": "Yes, exactly! Application context manages beans and dependencies.",
+            "send_at": "2024-01-10T09:30:00Z"
+          },
+          {
+            "message_id": "msg-038",
+            "sender_name": "David",
+            "message": "That makes a lot of sense now, thanks!",
+            "send_at": "2024-01-10T09:35:00Z"
+          },
+          {
+            "message_id": "msg-034",
+            "sender_name": "Sarah",
+            "message": "Dependency injection is super useful once you get it!",
+            "send_at": "2024-01-10T09:15:00Z"
+          },
+          {
+            "message_id": "msg-035",
+            "sender_name": "Alex",
+            "message": "Absolutely! Let’s dive into it with a quick example.",
+            "send_at": "2024-01-10T09:20:00Z"
+          },
+          {
+            "message_id": "msg-036",
+            "sender_name": "Michael",
+            "message": "Is this related to the application context in Spring?",
+            "send_at": "2024-01-10T09:25:00Z"
+          },
+          {
+            "message_id": "msg-037",
+            "sender_name": "Alex",
+            "message": "Yes, exactly! Application context manages beans and dependencies.",
+            "send_at": "2024-01-10T09:30:00Z"
+          },
+          {
+            "message_id": "msg-038",
+            "sender_name": "David",
+            "message": "That makes a lot of sense now, thanks!",
+            "send_at": "2024-01-10T09:35:00Z"
+          }
+        ]
+      }
+    ]
+  }
+}
