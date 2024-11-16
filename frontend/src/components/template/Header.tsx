@@ -25,7 +25,7 @@ interface Props {
 }
 
 export default function Header({toggle}: Props) {
-    const {logout} = useUser()
+    const {logout, user} = useUser()
     const path = useLocation();
     const current = path.pathname.split("/").filter(Boolean);
     const {toggleDarkMode, darkMode} = useDarkModeStore()
@@ -70,7 +70,7 @@ export default function Header({toggle}: Props) {
                         <div>
                             <button onClick={() => toggleDarkMode()}>{darkMode ? <Sun/> : <Moon/>} </button>
                         </div>
-                        <span className="font-semibold">John Doe</span>
+                        <span className="font-semibold text-xs md:text-base">{user?.profile.full_name}</span>
                         <DropdownMenu>
 
                             <DropdownMenuTrigger>

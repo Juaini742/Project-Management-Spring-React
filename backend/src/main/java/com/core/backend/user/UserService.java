@@ -1,6 +1,7 @@
 package com.core.backend.user;
 
 
+import com.core.backend.auth.AuthRepository;
 import com.core.backend.auth.AuthService;
 import com.core.backend.auth.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -12,14 +13,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
-    private final JwtService jwtService;
-    private final UserMapper userMapper = UserMapper.INSTANCE;
-    private final PasswordEncoder passwordEncoder;
     private final AuthService authService;
+    private final AuthRepository authRepository;
 
     public User getMe() {
-        return authService.getUserByToken();
+        String email = authService.getEmailToken();
+        return authRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
 

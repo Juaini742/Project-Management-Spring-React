@@ -1,12 +1,12 @@
 package com.core.backend.user;
 
-import com.core.backend.auth.AuthService;
+import com.core.backend.profile.Profile;
+import com.core.backend.profile.ProfileRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +22,7 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final ProfileRepository profileRepository;
 
     @GetMapping
     public ResponseEntity<String> test() {
@@ -31,7 +32,11 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity<UserResponse> getMe() {
         User user = userService.getMe();
-        UserResponse response = new UserResponse(user.getId(), user.getEmail(), user.getRole());
+        Profile profile = profileRepository
+                .findByUserId(user.getId())
+                .orElseThrow(() -> new RuntimeException("Profile not found"));
+
+        UserResponse response = new UserResponse(user.getId(), user.getEmail(), user.getRole(), profile);
         return ResponseEntity.ok(response);
     }
 

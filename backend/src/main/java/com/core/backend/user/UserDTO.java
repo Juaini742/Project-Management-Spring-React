@@ -8,9 +8,10 @@ import lombok.*;
 
 
 @Builder
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserDTO {
 
     @Column(unique = true)
@@ -24,5 +25,4 @@ public class UserDTO {
     private String password;
 
     private Role role;
-
 }

@@ -2,7 +2,7 @@ package com.core.backend.profile;
 
 
 import com.core.backend.user.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,13 +30,13 @@ public class Profile {
 
     private String profile_image;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIgnore
     private User user;
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
     private Timestamp created_at = Timestamp.valueOf(java.time.LocalDateTime.now());
 
-    @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = true)
-    private Timestamp updated_at = Timestamp.valueOf(java.time.LocalDateTime.now());
+    private Timestamp updated_at;
 }

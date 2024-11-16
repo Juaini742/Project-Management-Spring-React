@@ -32,7 +32,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
-    private final String PREFIX_PUBLIC_ENDPOINT = "/api/public/**";
 
 
     @Override
@@ -41,11 +40,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain) throws ServletException, IOException {
         AntPathMatcher pathMatcher = new AntPathMatcher();
+        String PREFIX_PUBLIC_ENDPOINT = "/api/public/**";
+
         if (pathMatcher.match(PREFIX_PUBLIC_ENDPOINT, request.getRequestURI())) {
             filterChain.doFilter(request, response);
             return;
         }
-
 
         Cookie[] cookies = request.getCookies();
         String jwt = null;

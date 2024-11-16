@@ -3,6 +3,7 @@ import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import {LineWave} from "react-loader-spinner";
 import AuthTemplate from "@/components/template/AuthTemplate.tsx";
+import ProfileForm from "@/pages/profile/ProfileForm.tsx";
 
 export default function SecuredRoute({element}: { element: React.ReactElement }) {
     const navigate = useNavigate();
@@ -29,6 +30,10 @@ export default function SecuredRoute({element}: { element: React.ReactElement })
                 lastLineColor=""
             />
         </AuthTemplate>;
+    }
+
+    if (user?.profile.full_name === null) {
+        return <ProfileForm/>
     }
 
     return element

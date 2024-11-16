@@ -1,4 +1,4 @@
-import LeftContent from "@/pages/overview/inbox/LeftContent.tsx";
+import LeftContent from "@/pages/overview/inbox/InboxList.tsx";
 import {ScrollArea} from "@/components/ui/scroll-area.tsx";
 import {Outlet} from "react-router-dom";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";

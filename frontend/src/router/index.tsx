@@ -6,7 +6,7 @@ import RegisterPage from "@/pages/register/RegisterPage.tsx";
 import OverviewInbox from "@/pages/overview/inbox/OverviewInbox.tsx";
 import OverviewSent from "@/pages/overview/sent/OverviewSent.tsx";
 import OverviewGroup from "@/pages/overview/group/OverviewGroup.tsx";
-import RightContent from "@/pages/overview/inbox/RightContent.tsx";
+import RightContent from "@/pages/overview/inbox/InboxItems.tsx";
 import EmptyInbox from "@/pages/overview/inbox/EmptyInbox.tsx";
 import LoginPage from "@/pages/login/LoginPage.tsx";
 import PublicRoute from "@/router/PublicRoute.tsx";

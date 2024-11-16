@@ -1,13 +1,10 @@
 import {create} from "zustand";
 import {getMeEndpoint, logoutEndpoint} from "@/lib/api.ts";
 import {useQuery} from "@tanstack/react-query";
+import {User} from "@/lib/interfaces.ts";
 
 
-interface User {
-    id: number;
-    email: string;
-    role: string;
-}
+
 
 interface CreateUserInterface {
     user: User | null;

@@ -1,7 +1,7 @@
 package com.core.backend.config;
 
+import com.core.backend.auth.AuthRepository;
 import com.core.backend.user.User;
-import com.core.backend.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,24 +18,21 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 
 @Configuration
 @RequiredArgsConstructor
 public class AppConfig {
 
-    private final UserRepository userRepository;
-
+    private final AuthRepository authRepository;
 
     @Bean
     public org.springframework.web.filter.CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:5173");
-        config.addAllowedMethod("*");
+        config.setAllowedOrigins(List.of("http://localhost:5173"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.addAllowedHeader("*");
         source.registerCorsConfiguration("/**", config);
         return new org.springframework.web.filter.CorsFilter(source);
@@ -44,24 +41,19 @@ public class AppConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            Optional<User> userOptional = userRepository.findByEmail(username);
+            Optional<User> userOptional = authRepository.findByEmail(username);
 
             if (userOptional.isEmpty()) {
                 throw new UsernameNotFoundException("User not found with username: " + username);
             }
-
             User user = userOptional.get();
 
-            Collection<GrantedAuthority> role = Collections.singletonList(
-                    new SimpleGrantedAuthority("ROLE_" + user.getRole())
-            );
+            Collection<GrantedAuthority> authorities = Collections
+                    .singletonList(
+                            new SimpleGrantedAuthority("ROLE_" + user.getRole())
+                    );
 
-
-            return new org.springframework.security.core.userdetails.User(
-                    user.getUsername(),
-                    user.getPassword(),
-                    role
-            );
+            return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
         };
     }
 

@@ -8,3 +8,29 @@ export const authSchema = zod.object({
 });
 
 export type authValues = zod.infer<typeof authSchema>;
+
+export const profileSchema = zod.object({
+    full_name: requiredString,
+    address: requiredString,
+    job: requiredString,
+});
+
+export type profileValues = zod.infer<typeof profileSchema>;
+
+
+export interface User {
+    id: number;
+    email: string;
+    role: string;
+    "profile": Profile
+}
+
+export interface Profile {
+    "id": string;
+    "full_name": string;
+    "address": string;
+    "job": string;
+    "profile_image": string;
+    "created_at": string;
+    "updated_at": string;
+}
