@@ -2,6 +2,9 @@ package com.core.backend.user;
 
 
 import com.core.backend.friend.Friend;
+import com.core.backend.project.Project;
+import com.core.backend.projectMembe.ProjectMember;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -34,9 +37,16 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Friend> friends;
+
+    @OneToMany(mappedBy = "created_by", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Project> projectsCreated = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProjectMember> memberships = new ArrayList<>();
+
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
     private Timestamp created_at = Timestamp.valueOf(java.time.LocalDateTime.now());

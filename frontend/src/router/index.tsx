@@ -1,4 +1,4 @@
-import {createBrowserRouter} from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import OverviewPage from "@/pages/overview/OverviewPage.tsx";
 import ProfilePage from "@/pages/profile/ProfilePage.tsx";
 import ProjectPage from "@/pages/project/ProjectPage.tsx";
@@ -12,58 +12,68 @@ import LoginPage from "@/pages/login/LoginPage.tsx";
 import PublicRoute from "@/router/PublicRoute.tsx";
 import SecuredRoute from "@/router/SecuredRoute.tsx";
 import DashboardPage from "@/pages/dashboard/DashboardPage.tsx";
+import ProjectDetail from "@/pages/project/project-detail/manager/ProjectDetail.tsx";
+import ProjectDetailForMember from "@/pages/project/project-detail/member/ProjectDetailForMember.tsx";
 
 export const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <SecuredRoute element={<DashboardPage/>}/>,
-    },
-    {
-        path: '/overview',
-        element: <SecuredRoute element={<OverviewPage/>}/>,
+  {
+    path: "/",
+    element: <SecuredRoute element={<DashboardPage />} />,
+  },
+  {
+    path: "/overview",
+    element: <SecuredRoute element={<OverviewPage />} />,
+    children: [
+      {
+        index: true,
+        element: <SecuredRoute element={<OverviewInbox />} />,
+      },
+      {
+        path: "inbox",
+        element: <SecuredRoute element={<OverviewInbox />} />,
         children: [
-            {
-                index: true,
-                element: <SecuredRoute element={<OverviewInbox/>}/>,
-            },
-            {
-                path: 'inbox',
-                element: <SecuredRoute element={<OverviewInbox/>}/>,
-                children: [
-                    {
-                        index: true,
-                        element: <SecuredRoute element={<EmptyInbox/>}/>,
-                    },
-                    {
-                        path: ":id",
-                        element: <SecuredRoute element={<RightContent/>}/>,
-                    }
-                ]
-            },
-            {
-                path: 'sent',
-                element: <SecuredRoute element={<OverviewSent/>}/>,
-            },
-            {
-                path: 'group',
-                element: <SecuredRoute element={<OverviewGroup/>}/>,
-            },
-        ]
-    },
-    {
-        path: '/profile',
-        element: <SecuredRoute element={<ProfilePage/>}/>,
-    },
-    {
-        path: '/project',
-        element: <SecuredRoute element={<ProjectPage/>}/>,
-    },
-    {
-        path: '/login',
-        element: <PublicRoute element={<LoginPage/>}/>,
-    },
-    {
-        path: '/register',
-        element: <PublicRoute element={<RegisterPage/>}/>,
-    },
-])
+          {
+            index: true,
+            element: <SecuredRoute element={<EmptyInbox />} />,
+          },
+          {
+            path: ":id",
+            element: <SecuredRoute element={<RightContent />} />,
+          },
+        ],
+      },
+      {
+        path: "sent",
+        element: <SecuredRoute element={<OverviewSent />} />,
+      },
+      {
+        path: "group",
+        element: <SecuredRoute element={<OverviewGroup />} />,
+      },
+    ],
+  },
+  {
+    path: "/profile",
+    element: <SecuredRoute element={<ProfilePage />} />,
+  },
+  {
+    path: "/project/:id/members",
+    element: <SecuredRoute element={<ProjectDetailForMember />} />,
+  },
+  {
+    path: "/project",
+    element: <SecuredRoute element={<ProjectPage />} />,
+  },
+  {
+    path: "/project/:id",
+    element: <SecuredRoute element={<ProjectDetail />} />,
+  },
+  {
+    path: "/login",
+    element: <PublicRoute element={<LoginPage />} />,
+  },
+  {
+    path: "/register",
+    element: <PublicRoute element={<RegisterPage />} />,
+  },
+]);

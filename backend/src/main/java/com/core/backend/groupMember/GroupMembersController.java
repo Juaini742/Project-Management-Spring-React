@@ -1,7 +1,9 @@
 package com.core.backend.groupMember;
 
 
-import jakarta.validation.Valid;
+import com.core.backend.interfaces.onCreate;
+import com.core.backend.interfaces.onDelete;
+import com.core.backend.interfaces.onUpdate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

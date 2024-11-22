@@ -8,12 +8,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -25,8 +23,8 @@ public class UserController {
     private final ProfileRepository profileRepository;
 
     @GetMapping
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("ok");
+    public ResponseEntity<String> test(@RequestParam String id) {
+        return ResponseEntity.ok(id);
     }
 
     @GetMapping("/me")
@@ -38,6 +36,18 @@ public class UserController {
 
         UserResponse response = new UserResponse(user.getId(), user.getEmail(), user.getRole(), profile);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/friend")
+    public ResponseEntity<List<UserResponse>> findAllUserNotFriend() {
+        List<UserResponse> users = userService.findAllUserNotFriend();
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/available")
+    public ResponseEntity<List<UserResponse>> getAvailableUserForProject(@RequestParam String userId, @RequestParam String projectId) {
+        List<UserResponse> users = userService.getAvailableUserForProject(userId, projectId);
+        return ResponseEntity.ok(users);
     }
 
     @PostMapping("/logout")

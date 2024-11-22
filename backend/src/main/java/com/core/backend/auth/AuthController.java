@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/public/auth")
@@ -34,7 +36,6 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<String> login(HttpServletResponse resp, @Valid @RequestBody UserDTO userDTO) {
         String token = authService.authenticate(userDTO);
-        System.out.println("TOKEN " + token);
         Cookie cookie = new Cookie("token", token);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);

@@ -72,6 +72,9 @@ public class AuthService {
         if (auth == null && !auth.isAuthenticated()) {
             throw new RuntimeException("User not authenticated");
         }
-        return auth.getName();
+
+        return auth.getName(); // -> email
+
+        // decode -> header -> signature -> payload -> secret
     }
 }

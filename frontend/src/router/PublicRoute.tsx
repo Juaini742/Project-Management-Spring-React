@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import {useUser} from "@/hooks/useUser.tsx";
+import {useUser} from "@/hooks/useUser.ts";
 import {useEffect} from "react";
 
 

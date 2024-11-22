@@ -92,10 +92,12 @@ public class GroupMemberService {
                 .findByUserIdAndGroupId(user.getId(), groupMembersDTO.getGroup_id());
         if (optionalGroupMember.isPresent()) {
             GroupMember groupMember = optionalGroupMember.get();
+
             if (groupMembersDTO.getStatusGroup().equalsIgnoreCase("accepted")) {
                 groupMember.setStatusGroup(GroupMember.StatusGroup.ACCEPTED);
                 groupMember.setJoined_at(Timestamp.valueOf(LocalDateTime.now()));
                 groupMemberRepository.save(groupMember);
+
             } else if (groupMembersDTO.getStatusGroup().equalsIgnoreCase("rejected")) {
                 groupMemberRepository.delete(groupMember);
             } else {

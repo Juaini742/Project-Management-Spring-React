@@ -10,20 +10,20 @@ export default function Sidebar({isVisible}: { isVisible: boolean }) {
             name: 'Home',
             path: '/',
             icon: <House className="text-2xl"/>
-        },{
+        }, {
             name: 'Overview',
             path: '/overview',
             icon: <Target className="text-2xl"/>
         },
         {
-            name: 'Profile',
-            path: '/profile',
-            icon: <CircleUserRound/>
-        },
-        {
             name: 'Project',
             path: '/project',
             icon: <FolderKanban/>
+        },
+        {
+            name: 'Profile',
+            path: '/profile',
+            icon: <CircleUserRound/>
         },
     ]
 

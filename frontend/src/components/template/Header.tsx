@@ -16,7 +16,7 @@ import {
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import EachElement from "@/components/EachElement.tsx";
-import {useUser} from "@/hooks/useUser.tsx";
+import {useUser} from "@/hooks/useUser.ts";
 import useDarkModeStore from "@/hooks/darkModeStore.ts";
 import {useEffect} from "react";
 
@@ -68,7 +68,7 @@ export default function Header({toggle}: Props) {
                 <div>
                     <div className="flex items-center gap-3">
                         <div>
-                            <button onClick={() => toggleDarkMode()}>{darkMode ? <Sun/> : <Moon/>} </button>
+                            <button onClick={() => toggleDarkMode()}>{darkMode ? <Sun className="size-6" /> : <Moon className="size-6"/>} </button>
                         </div>
                         <span className="font-semibold text-xs md:text-base">{user?.profile.full_name}</span>
                         <DropdownMenu>
