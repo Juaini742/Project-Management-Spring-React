@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/alert-dialog.tsx";
 
 interface Props {
-    label: string;
+    label?: string;
     title: string;
     desc: string;
     isLoading?: boolean;
@@ -21,7 +21,7 @@ interface Props {
 export default function ButtonDeleteWithAlert({label, title, desc, isLoading, onDelete, button}: Props) {
     return (
         <AlertDialog>
-            <AlertDialogTrigger>
+            <AlertDialogTrigger asChild>
                 {button ? button : (
                     <Button disabled={isLoading}>{label}</Button>
                 )}

@@ -1,6 +1,7 @@
 package com.core.backend.task;
 
 import com.core.backend.project.Project;
+import com.core.backend.task_completion.TaskCompletion;
 import com.core.backend.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -23,6 +27,7 @@ public class Task {
 
     private String name;
 
+    @Column(columnDefinition = "text")
     private String description;
 
     @Enumerated(EnumType.STRING)
@@ -35,11 +40,12 @@ public class Task {
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "assigned_to", nullable = false)
-    private User assignedTo;
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TaskCompletion> assignedUsers;
 
-    private Timestamp deadline;
+    private Timestamp startDate;
+
+    private Timestamp endDate;
 
     private Timestamp created_at;
 

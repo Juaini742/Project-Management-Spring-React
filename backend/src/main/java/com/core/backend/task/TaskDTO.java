@@ -12,6 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 
 @Data
@@ -35,9 +36,9 @@ public class TaskDTO {
     @NotBlank(message = "field is required")
     private String priority;
 
-    @NotBlank(message = "field is required")
-    private String assignedTo;
+    private List<String> assignedTo;
 
-    @NotBlank(message = "field is required")
-    private String deadline;
+    private Timestamp startDate;
+
+    private Timestamp endDate;
 }

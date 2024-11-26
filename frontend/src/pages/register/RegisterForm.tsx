@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import { authSchema, authValues } from "@/lib/interfaces.ts";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -11,22 +10,12 @@ import {
 } from "@/components/ui/form.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { Link, useNavigate } from "react-router-dom";
-import { registerEndpoint } from "@/lib/api.ts";
-import { useMutation } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
+import {authSchema, authValues} from "@/lib/validation.ts";
+import {useUser} from "@/hooks/useUser.ts";
 
 export default function RegisterForm() {
-  const { isLoading, mutateAsync } = useMutation({
-    mutationKey: ["user"],
-    mutationFn: (data: authValues) => registerEndpoint(data),
-    onSuccess: () => {
-      navigate("/login");
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
-  const navigate = useNavigate();
+  const {isLoadingRegister, onRegister} = useUser()
   const form = useForm<authValues>({
     resolver: zodResolver(authSchema),
     defaultValues: {
@@ -36,7 +25,7 @@ export default function RegisterForm() {
   });
 
   const onSubmit = async (data: authValues) => {
-    await mutateAsync(data);
+    await onRegister(data);
   };
 
   return (
@@ -79,8 +68,8 @@ export default function RegisterForm() {
               click here to login
             </Link>
           </span>
-          <Button disabled={isLoading} className="w-full">
-            {isLoading ? "Loading...." : "Register"}
+          <Button disabled={isLoadingRegister} className="w-full">
+            {isLoadingRegister ? "Loading...." : "Register"}
           </Button>
         </div>
       </form>

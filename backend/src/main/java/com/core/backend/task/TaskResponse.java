@@ -11,8 +11,15 @@ public record TaskResponse(String id, String own, List<TaskDetails> tasks) {
             String description,
             String status,
             String priority,
-            String assignedTo,
-            Timestamp deadline
+            Timestamp startDate,
+            Timestamp endDate,
+            List<AssignedToDetails> assignedTo
+    ) {
+    }
+
+    record AssignedToDetails(
+            String email,
+            Boolean isDone
     ) {
     }
 }

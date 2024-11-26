@@ -3,8 +3,8 @@ package com.core.backend.group;
 
 import com.core.backend.auth.AuthRepository;
 import com.core.backend.auth.AuthService;
-import com.core.backend.groupMember.GroupMember;
-import com.core.backend.groupMember.GroupMembersRepository;
+import com.core.backend.group_member.GroupMember;
+import com.core.backend.group_member.GroupMembersRepository;
 import com.core.backend.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

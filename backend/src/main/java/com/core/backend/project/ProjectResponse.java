@@ -1,11 +1,29 @@
 package com.core.backend.project;
 
-import java.util.List;
+import com.core.backend.project_member.ProjectMember;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 
-public record ProjectResponse(String id, String email, List<ProjectDetails> projects) {
+public record ProjectResponse<T>(T data) {
 
-    record ProjectDetails(String projectId, String createdId, String name, String description, boolean is_group_chat_enabled) {
+    record ProjectDetails(
+            String projectId,
+            String name,
+            String description,
+            Boolean is_group_chat_enabled,
+            Timestamp startDate,
+            Timestamp endDate,
+            String category,
+            BigDecimal budget,
+            Integer progress,
+            Integer estimated_hours,
+            Integer actual_hours,
+            String color,
+            String tag,
+            ProjectMember.Member_role role
+    ) {
     }
 }
 

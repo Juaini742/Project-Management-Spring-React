@@ -3,17 +3,19 @@ package com.core.backend.task;
 
 import com.core.backend.auth.AuthRepository;
 import com.core.backend.auth.AuthService;
-import com.core.backend.helper.TimeConversion;
 import com.core.backend.project.Project;
 import com.core.backend.project.ProjectRepository;
-import com.core.backend.projectMembe.ProjectMember;
-import com.core.backend.projectMembe.ProjectMemberRepository;
+import com.core.backend.project_member.ProjectMember;
+import com.core.backend.project_member.ProjectMemberRepository;
+import com.core.backend.task_completion.TaskCompletion;
+import com.core.backend.task_completion.TaskCompletionRepository;
 import com.core.backend.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -25,6 +27,7 @@ public class TaskService {
     private final AuthRepository authRepository;
     private final ProjectRepository projectRepository;
     private final ProjectMemberRepository projectMemberRepository;
+    private final TaskCompletionRepository taskCompletionRepository;
 
     private User getUser() {
         String email = authService.getEmailToken();
@@ -50,8 +53,15 @@ public class TaskService {
                         data.getDescription(),
                         data.getStatus().name(),
                         data.getPriority().name(),
-                        data.getAssignedTo().getEmail(),
-                        data.getDeadline())).toList();
+                        data.getStartDate(),
+                        data.getEndDate(),
+                        data.getAssignedUsers().stream().map(user ->
+                                new TaskResponse.AssignedToDetails(
+                                        user.getUser().getEmail(),
+                                        user.isDone()
+                                )
+                        ).toList()
+                )).toList();
 
         return new TaskResponse(
                 tasks.get(0).getProject().getId(),
@@ -59,28 +69,26 @@ public class TaskService {
                 taskDetailsList
         );
     }
-
-    public TaskResponse getAllTaskByUserId(String userId) {
-        List<Task> tasks = taskRepository.findAllByAssignedTo(userId);
-
-        if (tasks.isEmpty()) {
-            throw new RuntimeException("No task found");
-        }
-
-        return new TaskResponse(
-                tasks.get(0).getAssignedTo().getId(),
-                tasks.get(0).getAssignedTo().getEmail(),
-                tasks.stream().map(data ->
-                        new TaskResponse.TaskDetails(
-                                data.getId(),
-                                data.getName(),
-                                data.getDescription(),
-                                data.getStatus().name(),
-                                data.getPriority().name(),
-                                null,
-                                data.getDeadline())).toList()
-        );
-    }
+//    public TaskResponse getAllTaskByUserId(String userId) {
+//        List<Task> tasks = taskRepository.findAllByAssignedTo(userId);
+//
+//        if (tasks.isEmpty()) {
+//            throw new RuntimeException("No task found");
+//        }
+//
+//        return new TaskResponse(
+//                null,
+//                null,
+//                tasks.stream().map(data ->
+//                        new TaskResponse.TaskDetails(
+//                                data.getId(),
+//                                data.getName(),
+//                                data.getDescription(),
+//                                data.getStatus().name(),
+//                                data.getPriority().name(),
+//                                null)).toList()
+//        );
+//    }
 
     public void createTask(TaskDTO taskDTO) {
         User user = getUser();
@@ -88,72 +96,54 @@ public class TaskService {
         Project project = projectRepository.findById(taskDTO.getProjectId())
                 .orElseThrow(() -> new RuntimeException("Project not found"));
 
-        ProjectMember pm = projectMemberRepository.findByUserIdAndProjectId(user.getId(), taskDTO.getProjectId())
+        projectMemberRepository.findByUserIdAndProjectId(user.getId(), taskDTO.getProjectId())
                 .orElseThrow(() -> new RuntimeException("Unauthorized"));
-
-        User assigned = verifyRole(taskDTO, pm);
 
         Task task = Task.builder()
                 .name(taskDTO.getName())
                 .description(taskDTO.getDescription())
-                .assignedTo(assigned)
                 .project(project)
-                .deadline(TimeConversion.parseToTimestamp(taskDTO.getDeadline()))
+                .status(extractStatus(taskDTO.getStatus()))
+                .priority(extractPriority(taskDTO.getPriority()))
+                .startDate(taskDTO.getStartDate())
+                .endDate(taskDTO.getEndDate())
                 .created_at(Timestamp.valueOf(LocalDateTime.now()))
                 .updated_at(Timestamp.valueOf(LocalDateTime.now()))
                 .build();
-
-        switch (taskDTO.getStatus().toUpperCase()) {
-            case "DONE" -> task.setStatus(Task.TaskStatus.DONE);
-            case "IN_PROGRESS" -> task.setStatus(Task.TaskStatus.IN_PROGRESS);
-            case "TODO" -> task.setStatus(Task.TaskStatus.TODO);
-            default -> throw new RuntimeException("Invalid status");
-        }
-
-        switch (taskDTO.getPriority().toUpperCase()) {
-            case "LOW" -> task.setPriority(Task.TaskPriority.LOW);
-            case "MEDIUM" -> task.setPriority(Task.TaskPriority.MEDIUM);
-            case "HIGH" -> task.setPriority(Task.TaskPriority.HIGH);
-            default -> throw new RuntimeException("Invalid priority");
-        }
         taskRepository.save(task);
+
+        taskDTO.getAssignedTo().forEach(assignedUser -> {
+            User assignedUserObj = authRepository.findByEmail(assignedUser)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+            TaskCompletion taskCompletion = new TaskCompletion();
+            taskCompletion.setTask(task);
+            taskCompletion.setUser(assignedUserObj);
+            taskCompletionRepository.save(taskCompletion);
+        });
+
     }
 
-    private User verifyRole(TaskDTO taskDTO, ProjectMember pm) {
-        if (!pm.getRole().equals(ProjectMember.Member_role.MANAGER)) {
-            throw new RuntimeException("You are not manager, you cannot add new task");
-        }
-        User assigned = authRepository.findById(taskDTO.getAssignedTo())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        projectMemberRepository.findByUserIdAndProjectId(assigned.getId(), taskDTO.getProjectId())
-                .orElseThrow(() -> new RuntimeException("Assigned user is not part of the project"));
-
-        return assigned;
-    }
-
-    public void updateTask(String taskId, TaskDTO taskDTO) {
-        Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
-
-        User user = getUser();
-
-        projectRepository.findById(task.getProject().getId())
-                .orElseThrow(() -> new RuntimeException("Project not found"));
-
-        ProjectMember pm = projectMemberRepository.findByUserIdAndProjectId(user.getId(), task.getProject().getId())
-                .orElseThrow(() -> new RuntimeException("Unauthorized"));
-
-        verifyRole(taskDTO, pm);
-
-        task.setName(taskDTO.getName());
-        task.setDescription(taskDTO.getDescription());
-        task.setDeadline(TimeConversion.parseToTimestamp(taskDTO.getDeadline()));
-        task.setStatus(Task.TaskStatus.valueOf(taskDTO.getStatus().toUpperCase()));
-        task.setPriority(Task.TaskPriority.valueOf(taskDTO.getPriority().toUpperCase()));
-
-        taskRepository.save(task);
-    }
+//    public void updateTask(String taskId, TaskDTO taskDTO) {
+//        Task task = taskRepository.findById(taskId)
+//                .orElseThrow(() -> new RuntimeException("Task not found"));
+//
+//        User user = getUser();
+//
+//        projectRepository.findById(task.getProject().getId())
+//                .orElseThrow(() -> new RuntimeException("Project not found"));
+//
+//        ProjectMember pm = projectMemberRepository.findByUserIdAndProjectId(user.getId(), task.getProject().getId())
+//                .orElseThrow(() -> new RuntimeException("Unauthorized"));
+//
+//        verifyRole(taskDTO, pm);
+//
+//        task.setName(taskDTO.getName());
+//        task.setDescription(taskDTO.getDescription());
+//        task.setDeadline(TimeConversion.parseToTimestamp(taskDTO.getDeadline()));
+//        task.setStatus(extractStatus(taskDTO.getStatus()));
+//        task.setPriority(extractPriority(taskDTO.getPriority()));
+//        taskRepository.save(task);
+//    }
 
     public void deleteTask(String taskId) {
         User user = getUser();
@@ -168,6 +158,45 @@ public class TaskService {
             throw new RuntimeException("You are not manager, you cannot add new task");
         }
 
+        List<TaskCompletion> taskCompletion = taskCompletionRepository
+                .findByUserIdAndTaskId(user.getId(), task.getId());
+
+        if (!taskCompletion.isEmpty()) {
+            throw new RuntimeException("You have already completed this task");
+        }
+
+        taskCompletionRepository.deleteAll(taskCompletion);
         taskRepository.delete(task);
     }
+
+    private Task.TaskPriority extractPriority(String priority) {
+        return switch (priority.toUpperCase()) {
+            case "LOW" -> Task.TaskPriority.LOW;
+            case "MEDIUM" -> Task.TaskPriority.MEDIUM;
+            case "HIGH" -> Task.TaskPriority.HIGH;
+            default -> throw new RuntimeException("Invalid priority");
+        };
+    }
+
+    private Task.TaskStatus extractStatus(String status) {
+        return switch (status.toUpperCase()) {
+            case "DONE" -> Task.TaskStatus.DONE;
+            case "IN_PROGRESS" -> Task.TaskStatus.IN_PROGRESS;
+            case "TODO" -> Task.TaskStatus.TODO;
+            default -> throw new RuntimeException("Invalid status");
+        };
+    }
+
+//    private User verifyRole(TaskDTO taskDTO, ProjectMember pm) {
+//        if (!pm.getRole().equals(ProjectMember.Member_role.MANAGER)) {
+//            throw new RuntimeException("You are not manager, you cannot add new task");
+//        }
+//        User assigned = authRepository.findById(taskDTO.getAssignedTo())
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+//
+//        projectMemberRepository.findByUserIdAndProjectId(assigned.getId(), taskDTO.getProjectId())
+//                .orElseThrow(() -> new RuntimeException("Assigned user is not part of the project"));
+//
+//        return assigned;
+//    }
 }

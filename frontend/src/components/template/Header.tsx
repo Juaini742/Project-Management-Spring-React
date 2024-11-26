@@ -39,67 +39,67 @@ export default function Header({toggle}: Props) {
         }
     }, [darkMode])
 
-        return (
-            <header className="h-16 w-full flex justify-between items-center gap-2 border-b px-5">
-                <div className="flex items-center">
-                    <button onClick={toggle} className="mr-4">
-                        <PanelRight className="size-5"/>
-                    </button>
-                    <Breadcrumb>
-                        <BreadcrumbList>
-                            <BreadcrumbItem>
-                                <h1 className="text-mutedColor-1">App</h1>
-                            </BreadcrumbItem>
-                            <EachElement of={current.length > 1 ? current.slice(0, current.length - 1) : current}
-                                         render={(item, index) => (
-                                             <BreadcrumbItem key={index}>
-                                                 <BreadcrumbSeparator>
-                                                     <Slash/>
-                                                 </BreadcrumbSeparator>
-                                                 <BreadcrumbLink href={item} className="text-mutedColor-1">
-                                                     {item}
-                                                 </BreadcrumbLink>
-                                             </BreadcrumbItem>
-                                         )}/>
-                        </BreadcrumbList>
-                    </Breadcrumb>
-                </div>
+    return (
+        <header className="h-16 w-full flex justify-between items-center gap-2 border-b px-5">
+            <div className="flex items-center">
+                <button onClick={toggle} className="mr-4">
+                    <PanelRight className="size-5"/>
+                </button>
+                <Breadcrumb>
+                    <BreadcrumbList>
+                        <BreadcrumbItem>
+                            <h1 className="text-mutedColor-1">App</h1>
+                        </BreadcrumbItem>
+                        <EachElement of={current.length > 1 ? current.slice(0, current.length - 1) : current}
+                                     render={(item, index) => (
+                                         <BreadcrumbItem key={index}>
+                                             <BreadcrumbSeparator>
+                                                 <Slash/>
+                                             </BreadcrumbSeparator>
+                                             <BreadcrumbLink href={item} className="text-mutedColor-1">
+                                                 {item}
+                                             </BreadcrumbLink>
+                                         </BreadcrumbItem>
+                                     )}/>
+                    </BreadcrumbList>
+                </Breadcrumb>
+            </div>
 
-                <div>
-                    <div className="flex items-center gap-3">
-                        <div>
-                            <button onClick={() => toggleDarkMode()}>{darkMode ? <Sun className="size-6" /> : <Moon className="size-6"/>} </button>
-                        </div>
-                        <span className="font-semibold text-xs md:text-base">{user?.profile.full_name}</span>
-                        <DropdownMenu>
-
-                            <DropdownMenuTrigger>
-                                <Avatar>
-                                    <AvatarImage
-                                        src="https://res.cloudinary.com/dixdqxpza/image/upload/v1710201314/samples/shoe.jpg"/>
-                                    <AvatarFallback>Profile</AvatarFallback>
-                                </Avatar>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="mr-5 mt-1">
-                                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                                <DropdownMenuSeparator/>
-                                <Link to="/profile">
-                                    <DropdownMenuItem>
-                                        Profile
-                                    </DropdownMenuItem>
-                                </Link>
-                                <Link to="/profile">
-                                    <DropdownMenuItem>
-                                        Notification
-                                    </DropdownMenuItem>
-                                </Link>
-                                <Button onClick={() => logout()} variant="destructive"
-                                        className="w-full h-8 mt-3">Logout</Button>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+            <div>
+                <div className="flex items-center gap-3">
+                    <div>
+                        <button onClick={() => toggleDarkMode()}>{darkMode ? <Sun className="size-6"/> :
+                            <Moon className="size-6"/>} </button>
                     </div>
+                    <span className="font-semibold text-xs md:text-base">{user?.profile.full_name}</span>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger>
+                            <Avatar>
+                                <AvatarImage
+                                    src="https://res.cloudinary.com/dixdqxpza/image/upload/v1710201314/samples/shoe.jpg"/>
+                                <AvatarFallback>Profile</AvatarFallback>
+                            </Avatar>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="mr-5 mt-1">
+                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                            <DropdownMenuSeparator/>
+                            <Link to="/profile">
+                                <DropdownMenuItem>
+                                    Profile
+                                </DropdownMenuItem>
+                            </Link>
+                            <Link to="/profile">
+                                <DropdownMenuItem>
+                                    Notification
+                                </DropdownMenuItem>
+                            </Link>
+                            <Button onClick={() => logout()} variant="destructive"
+                                    className="w-full h-8 mt-3">Logout</Button>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
+            </div>
 
-            </header>
-        )
-    }
+        </header>
+    )
+}

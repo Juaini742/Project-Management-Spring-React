@@ -12,14 +12,23 @@ import {
     MessageSquare,
 } from "lucide-react";
 import {Badge} from "@/components/ui/badge.tsx";
-import AssignedTask from "@/pages/project/project-detail/AssignedTask.tsx";
 import ProgressOverview from "@/pages/project/project-detail/ProgressOverview.tsx";
 import FieldUpload from "@/pages/project/project-detail/FieldUpload.tsx";
 import ActivityLog from "@/pages/project/project-detail/ActivityLog.tsx";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import TaskProjectItems from "@/pages/project/project-detail/task/TaskProjectItems.tsx";
+import {useQuery} from "@tanstack/react-query";
+import {getProjectByIdEndpoint} from "@/lib/api.ts";
+import MembersTableItems from "@/pages/project/member/MembersTableItems.tsx";
 
 export default function ProjectDetailForMember() {
-    const navigate = useNavigate()
+    const {id} = useParams();
+    const navigate = useNavigate();
+    const {data: project} = useQuery({
+        queryKey: ["project", id],
+        queryFn: () => getProjectByIdEndpoint(id),
+    });
+
     return (
         <MainTemplate>
             <ScrollArea className="h-[calc(100vh-20px)]">
@@ -34,8 +43,8 @@ export default function ProjectDetailForMember() {
                         className="relative w-full h-40 bg-gradient-to-r from-red-600 to-red-400 dark:from-red-800 dark:to-red-600">
                         <div className="absolute inset-0 flex items-center justify-center">
                             <div className="text-center text-white px-6">
-                                <h1 className="text-4xl font-bold">Project Name</h1>
-                                <p className="text-sm mt-2">A brief description of the project goes here.</p>
+                                <h1 className="text-4xl font-bold">{project?.name}</h1>
+                                <p className="text-sm mt-2">{project?.description}</p>
                             </div>
                         </div>
                     </div>
@@ -122,8 +131,13 @@ export default function ProjectDetailForMember() {
                     </div>
 
                     <div className="p-6 mb-10">
-                        {/* Assigned Tasks */}
-                        <AssignedTask/>
+                        <div className="mb-6">
+                            <MembersTableItems project={project} id={id}/>
+                        </div>
+                        <div>
+                            <h2 className="text-xl font-semibold mb-4">Tasks</h2>
+                            <TaskProjectItems id={id}/>
+                        </div>
                         {/* Progress Overview */}
                         <ProgressOverview/>
                         {/* file upload */}

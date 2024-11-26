@@ -3,12 +3,10 @@ package com.core.backend.user;
 
 import com.core.backend.auth.AuthRepository;
 import com.core.backend.auth.AuthService;
-import com.core.backend.auth.JwtService;
 import com.core.backend.friend.Friend;
 import com.core.backend.friend.FriendRepository;
-import com.core.backend.projectMembe.ProjectMemberRepository;
+import com.core.backend.project_member.ProjectMemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -46,7 +44,6 @@ public class UserService {
                         data.getRole(),
                         null
                 )).toList();
-
     }
 
     public List<UserResponse> findAllUserNotFriend() {

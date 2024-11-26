@@ -14,6 +14,8 @@ import SecuredRoute from "@/router/SecuredRoute.tsx";
 import DashboardPage from "@/pages/dashboard/DashboardPage.tsx";
 import ProjectDetail from "@/pages/project/project-detail/manager/ProjectDetail.tsx";
 import ProjectDetailForMember from "@/pages/project/project-detail/member/ProjectDetailForMember.tsx";
+import NewProjectDetail from "@/pages/project/project-detail/manager/ProjectDetail.tsx";
+import TaskDetailPage from "@/pages/project/project-detail/task/new-task/TaskDetailPage.tsx";
 
 export const router = createBrowserRouter([
   {
@@ -66,7 +68,11 @@ export const router = createBrowserRouter([
   },
   {
     path: "/project/:id",
-    element: <SecuredRoute element={<ProjectDetail />} />,
+    element: <SecuredRoute element={<NewProjectDetail />} />,
+  },
+  {
+    path: "/project/:id/task-detail",
+    element: <SecuredRoute element={<TaskDetailPage />} />,
   },
   {
     path: "/login",

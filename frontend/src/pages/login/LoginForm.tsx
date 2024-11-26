@@ -10,23 +10,12 @@ import {
 } from "@/components/ui/form.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { Link, useNavigate } from "react-router-dom";
-import { authSchema, authValues } from "@/lib/interfaces.ts";
-import { useMutation } from "@tanstack/react-query";
-import { loginEndpoint } from "@/lib/api.ts";
+import { Link } from "react-router-dom";
+import {authSchema, authValues} from "@/lib/validation.ts";
+import {useUser} from "@/hooks/useUser.ts";
 
 export default function LoginForm() {
-  const navigate = useNavigate();
-  const { isLoading, mutateAsync } = useMutation({
-    mutationKey: ["user"],
-    mutationFn: (data: authValues) => loginEndpoint(data),
-    onSuccess: () => {
-      navigate("/");
-    },
-    onError: (error) => {
-      console.log(error);
-    },
-  });
+  const {isLoadingLogin, onLogin} = useUser()
   const form = useForm<authValues>({
     resolver: zodResolver(authSchema),
     defaultValues: {
@@ -36,7 +25,7 @@ export default function LoginForm() {
   });
 
   const onSubmit = async (data: authValues) => {
-    await mutateAsync(data);
+    await onLogin(data);
   };
 
   return (
@@ -80,8 +69,8 @@ export default function LoginForm() {
               click here to register
             </Link>
           </span>
-          <Button disabled={isLoading} className="w-full">
-            {isLoading ? "Loading..." : "Login"}
+          <Button disabled={isLoadingLogin} className="w-full">
+            {isLoadingLogin ? "Loading..." : "Login"}
           </Button>
         </div>
       </form>

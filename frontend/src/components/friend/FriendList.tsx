@@ -1,13 +1,16 @@
 import {Badge} from "@/components/ui/badge.tsx";
 import {useState} from "react";
 import {Card} from "@/components/ui/card.tsx";
-import FriendDialog from "@/components/friend/FriendDialog.tsx";
-import DeleteFriendButton from "@/components/friend/DeleteFriendButton.tsx";
 import {useFriendAccepted} from "@/hooks/useFriendAccepted.ts";
 import EmptyCard from "@/components/EmptyCard.tsx";
+import DialogContainer from "@/components/DialogContainer.tsx";
+import {PlusCircle} from "lucide-react";
+import {Button} from "@/components/ui/button.tsx";
+import ProjectForm from "@/components/friend/FriendForm.tsx";
+import ButtonDeleteWithAlert from "@/components/ButtonDeleteWithAlert.tsx";
 
 export default function FriendList() {
-    const {friends} = useFriendAccepted();
+    const {friends, handleDeleteFriend} = useFriendAccepted();
     const [searchQuery, setSearchQuery] = useState("");
 
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,7 +22,7 @@ export default function FriendList() {
     );
 
     return (
-        <Card className="p-5">
+        <Card className="p-5 bg-none border-none">
             <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Friend List</h2>
             <div className="mb-4 w-full">
                 <input
@@ -32,7 +35,7 @@ export default function FriendList() {
             </div>
 
             {filteredFriends && filteredFriends.length === 0 ? (
-            <EmptyCard text="Friends list is empty" />
+                <EmptyCard text="Friends list is empty"/>
             ) : (
                 <div className="overflow-y-auto max-h-[400px]">
                     <table className="w-full table-auto">
@@ -51,7 +54,12 @@ export default function FriendList() {
                                     <Badge variant="secondary">{friend.status}</Badge>
                                 </td>
                                 <td className="px-4 py-2 text-sm">
-                                    <DeleteFriendButton id={friend.id} />
+                                    <ButtonDeleteWithAlert
+                                        label="Delete"
+                                        title="Are you sure, you want to delete this from your friend lists?"
+                                        desc="This action cannot be undone. This will permanently delete your friend relationship and remove your data from our servers."
+                                        onDelete={() => handleDeleteFriend(friend.id)}
+                                    />
                                 </td>
                             </tr>
                         ))}
@@ -60,7 +68,17 @@ export default function FriendList() {
                 </div>
             )}
             <div className="mt-5">
-                <FriendDialog/>
+                <DialogContainer
+                    title="Add Friend"
+                    description="Please search user by email with input bellow"
+                    button={
+                        <Button>
+                            <PlusCircle className="mr-2 h-4 w-4"/>
+                            Add Friend
+                        </Button>
+                    }
+                    content={<ProjectForm/>}
+                />
             </div>
         </Card>
     );

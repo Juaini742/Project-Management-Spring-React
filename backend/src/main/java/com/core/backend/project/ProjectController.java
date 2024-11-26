@@ -18,12 +18,12 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @GetMapping
-    public ResponseEntity<ProjectResponse> getAllProjectByUserId() {
+    public ResponseEntity<ProjectResponse<?>> getAllProjectByUserId() {
         return ResponseEntity.ok(projectService.getAllProjectByUserId());
     }
 
     @GetMapping("/{id}/data")
-    public ResponseEntity<ProjectDTO> getProjectById(@PathVariable("id") String id) {
+    public ResponseEntity<ProjectResponse<?>> getProjectById(@PathVariable("id") String id) {
         return ResponseEntity.ok(projectService.getProjectById(id));
     }
 

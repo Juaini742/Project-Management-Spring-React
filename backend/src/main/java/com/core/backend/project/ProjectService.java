@@ -2,9 +2,8 @@ package com.core.backend.project;
 
 import com.core.backend.auth.AuthRepository;
 import com.core.backend.auth.AuthService;
-import com.core.backend.projectMembe.ProjectMember;
-import com.core.backend.projectMembe.ProjectMemberRepository;
-import com.core.backend.projectMembe.ProjectMemberResponse;
+import com.core.backend.project_member.ProjectMember;
+import com.core.backend.project_member.ProjectMemberRepository;
 import com.core.backend.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,8 +12,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service
@@ -31,11 +28,28 @@ public class ProjectService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public ProjectDTO getProjectById(String id) {
+    public ProjectResponse<?> getProjectById(String id) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Project not found"));
 
-        return new ProjectDTO(project.getId(), project.getName(), project.getDescription());
+        return new ProjectResponse<>(
+                new ProjectAndMemberResponse(
+                        project.getId(),
+                        project.getName(),
+                        project.getDescription(),
+                        project.is_group_chat_enabled(),
+                        project.getStartDate(),
+                        project.getEndDate(),
+                        project.getCategory(),
+                        project.getBudget(),
+                        project.getProgress(),
+                        project.getEstimatedHours(),
+                        project.getActualHours(),
+                        project.getColor(),
+                        project.getTags(),
+                        null
+                )
+        );
     }
 
     public List<ProjectAndMemberResponse> getAllProjectAndMember() {
@@ -52,34 +66,49 @@ public class ProjectService {
                             project.getId(),
                             project.getName(),
                             project.getDescription(),
+                            project.is_group_chat_enabled(),
+                            project.getStartDate(),
+                            project.getEndDate(),
+                            project.getCategory(),
+                            project.getBudget(),
+                            project.getProgress(),
+                            project.getEstimatedHours(),
+                            project.getActualHours(),
+                            project.getColor(),
+                            project.getTags(),
                             role
                     );
                 }
         ).toList();
     }
 
-    public ProjectResponse getAllProjectByUserId() {
+    public ProjectResponse<?> getAllProjectByUserId() {
         User user = getUser();
         List<Project> projects = projectRepository
                 .findAllByCreatedBy(user.getId());
 
         if (projects.isEmpty()) {
-            return new ProjectResponse(
-                    user.getId(),
-                    user.getEmail(),
+            return new ProjectResponse<>(
                     Collections.emptyList()
             );
         }
 
-        return new ProjectResponse(
-                projects.get(0).getCreated_by().getId(),
-                projects.get(0).getCreated_by().getEmail(),
+        return new ProjectResponse<>(
                 projects.stream().map(project -> new ProjectResponse.ProjectDetails(
                         project.getId(),
-                        project.getCreated_by().getId(),
                         project.getName(),
                         project.getDescription(),
-                        project.is_group_chat_enabled()
+                        project.is_group_chat_enabled(),
+                        project.getStartDate(),
+                        project.getEndDate(),
+                        project.getCategory(),
+                        project.getBudget(),
+                        project.getProgress(),
+                        project.getEstimatedHours(),
+                        project.getActualHours(),
+                        project.getColor(),
+                        project.getTags(),
+                        null
                 )).toList()
         );
     }
@@ -88,15 +117,24 @@ public class ProjectService {
         Project project = Project.builder()
                 .name(projectDTO.getName())
                 .description(projectDTO.getDescription())
-                .created_by(getUser())
+                .createdBy(getUser())
                 .is_group_chat_enabled(false)
-                .created_at(new Timestamp(System.currentTimeMillis()))
-                .updated_at(new Timestamp(System.currentTimeMillis()))
+                .startDate(projectDTO.getStartDate())
+                .endDate(projectDTO.getEndDate())
+                .budget(projectDTO.getBudget())
+                .category(projectDTO.getCategory())
+                .progress(0)
+                .estimatedHours(projectDTO.getEstimatedHours())
+                .actualHours(projectDTO.getActualHours())
+                .color(projectDTO.getColor())
+                .tags(projectDTO.getTags())
+                .createdAt(new Timestamp(System.currentTimeMillis()))
+                .updatedAt(new Timestamp(System.currentTimeMillis()))
                 .build();
         projectRepository.save(project);
 
         ProjectMember projectMember = ProjectMember.builder()
-                .user(project.getCreated_by())
+                .user(project.getCreatedBy())
                 .role(ProjectMember.Member_role.MANAGER)
                 .project(project)
                 .joined_at(Timestamp.valueOf(LocalDateTime.now()))
@@ -109,7 +147,7 @@ public class ProjectService {
                 .orElseThrow(() -> new RuntimeException("Project not found"));
         project.setName(projectDTO.getName());
         project.setDescription(projectDTO.getDescription());
-        project.setUpdated_at(new Timestamp(System.currentTimeMillis()));
+        project.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
         projectRepository.save(project);
         return new ProjectDTO(projectId, project.getName(), project.getDescription());

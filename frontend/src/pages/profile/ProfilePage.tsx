@@ -1,9 +1,11 @@
 import MainTemplate from "@/components/template/MainTemplate.tsx";
 import {useUser} from "@/hooks/useUser";
 import {Briefcase, MapPin, User} from "lucide-react";
-import ProfileDialog from "./ProfileDialog";
 import FriendContainer from "@/components/friend/FriendContainer.tsx";
 import {ScrollArea} from "@/components/ui/scroll-area.tsx";
+import DialogContainer from "@/components/DialogContainer.tsx";
+import ProfileForm from "@/pages/profile/ProfileForm.tsx";
+import {Button} from "@/components/ui/button.tsx";
 
 export default function ProfilePage() {
     const {user} = useUser();
@@ -43,7 +45,12 @@ export default function ProfilePage() {
                                     <span className="font-medium">Address:</span>
                                     <span>{user?.profile.address}</span>
                                 </div>
-                                <ProfileDialog id={user?.profile.id}/>
+                                <DialogContainer
+                                    title="Update Profile"
+                                    description="Here is the form to update your profile data"
+                                    button={<div><Button>update</Button></div>}
+                                    content={<ProfileForm id={user?.profile.id} type="update"/>}
+                                />
                             </div>
                         </div>
                     </div>

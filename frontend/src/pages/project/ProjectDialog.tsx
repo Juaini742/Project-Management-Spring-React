@@ -7,7 +7,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {Pencil, PlusCircle} from "lucide-react";
-import ProjectForm from "./ProjectForm.tsx";
+import ProjectForm from "./form/ProjectForm.tsx";
 import {ProjectInterface} from "@/lib/interfaces.ts";
 
 interface Props {

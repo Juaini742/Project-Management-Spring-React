@@ -21,10 +21,10 @@ public class TaskController {
         return ResponseEntity.ok(taskService.getAllTaskByProject(projectId));
     }
 
-    @GetMapping("/assigned/{userId}")
-    public ResponseEntity<TaskResponse> getAllTaskByUserId(@PathVariable String userId) {
-        return ResponseEntity.ok(taskService.getAllTaskByUserId(userId));
-    }
+//    @GetMapping("/assigned/{userId}")
+//    public ResponseEntity<TaskResponse> getAllTaskByUserId(@PathVariable String userId) {
+//        return ResponseEntity.ok(taskService.getAllTaskByUserId(userId));
+//    }
 
     @PostMapping
     public ResponseEntity<String> createTask(@Validated @RequestBody TaskDTO taskDTO) {
@@ -32,11 +32,11 @@ public class TaskController {
         return ResponseEntity.ok("Task created successfully");
     }
 
-    @PutMapping("/{taskId}")
-    public ResponseEntity<String> updateTask(@PathVariable String taskId, @Validated @RequestBody TaskDTO taskDTO) {
-        taskService.updateTask(taskId, taskDTO);
-        return ResponseEntity.ok("Task updated successfully");
-    }
+//    @PutMapping("/{taskId}")
+//    public ResponseEntity<String> updateTask(@PathVariable String taskId, @Validated @RequestBody TaskDTO taskDTO) {
+//        taskService.updateTask(taskId, taskDTO);
+//        return ResponseEntity.ok("Task updated successfully");
+//    }
 
     @DeleteMapping("/{taskId}")
     public ResponseEntity<String> deleteTask(@PathVariable String taskId) {

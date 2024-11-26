@@ -1,15 +1,14 @@
 import {Form, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form.tsx";
 import {useForm} from "react-hook-form";
-import {projectMemberSchema, projectMemberValues} from "@/lib/interfaces.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import MemberInput from "@/pages/project/member/form/MemberInput.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {getAvailableUserForProjectEndpoint, projectMemberPostEndpoint} from "@/lib/api.ts";
+import { getAvailableUserForProjectEndpoint, projectMemberPostEndpoint} from "@/lib/api.ts";
 import {useToast} from "@/hooks/use-toast.ts";
 import ButtonWithLoading from "@/components/ButtonWithLoading.tsx";
-import {useUser} from "@/hooks/useUser.ts";
+import {projectMemberSchema, projectMemberValues} from "@/lib/validation.ts";
 
 export default function ProjectMemberForm({project}: { project: { id: string, name: string }; }) {
     const {toast} = useToast()

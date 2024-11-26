@@ -1,46 +1,7 @@
-import zod from "zod";
-
-const requiredString = zod
-    .string()
-    .min(1, {message: "This field is required"});
-
-export const authSchema = zod.object({
-    email: requiredString.email({message: "Email is invalid"}),
-    password: zod
-        .string()
-        .min(8, {message: "Password must be at least 8 characters"}),
-});
-
-export type authValues = zod.infer<typeof authSchema>;
-
-export const profileSchema = zod.object({
-    full_name: requiredString,
-    address: requiredString,
-    job: requiredString,
-});
-
-export type profileValues = zod.infer<typeof profileSchema>;
-
-export const projectSchema = zod.object({
-    name: requiredString,
-    description: requiredString,
-});
-
-export type projectValues = zod.infer<typeof projectSchema>;
-
-export const friendSchema = zod.object({
-    email: requiredString,
-});
-
-export type friendValues = zod.infer<typeof friendSchema>;
-
-export const projectMemberSchema = zod.object({
-    memberId: requiredString,
-    projectId: requiredString,
-    role: requiredString
-})
-
-export type projectMemberValues = zod.infer<typeof projectMemberSchema>;
+export interface deleteMemberValues {
+    id: string;
+    projectId: string;
+}
 
 export interface FriendUpdate {
     email: string;
@@ -68,8 +29,19 @@ export interface ProjectInterface {
     id: string;
     name: string;
     description: string;
+    is_group_chat_enabled: boolean;
+    startDate: string;
+    endDate: string;
+    category: string;
+    budget: string;
+    progress: number;
+    estimated_hours: number;
+    actual_hours: number;
+    color: string;
+    tag: string;
     role: string;
 }
+
 
 export interface ProjectDetail {
     projectId: string;
@@ -83,8 +55,9 @@ export interface ProjectMember {
     userId: string;
     projectName: string;
     role: string;
+    name: string;
     email: string;
-    joined_at: string;
+    joinedAt: string;
 }
 
 export interface TaskByProject {
@@ -99,8 +72,15 @@ export interface TaskInterface {
     description: string;
     status: string;
     priority: string;
-    assignedTo: string;
+    startDate: string;
+    endDate: string;
     deadline: string;
+    assignedTo: AssignedToTask[];
+}
+
+export interface AssignedToTask {
+    email: string;
+    isDone: boolean;
 }
 
 export interface UserNotFriend {
@@ -120,4 +100,22 @@ export interface FriendDetail {
     userId: string;
     email: string;
     status: string;
+}
+
+export interface SearchInterface {
+    name: string;
+    email: string;
+    role: string;
+}
+
+export interface PaginationInterface {
+    page: number;
+    totalPages: number;
+    totalElements: number;
+}
+
+export interface PaginationStoreInterface {
+    page: number;
+    totalPages: number;
+    size: number;
 }

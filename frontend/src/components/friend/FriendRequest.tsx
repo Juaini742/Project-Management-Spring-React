@@ -76,6 +76,7 @@ export default function FriendRequest() {
                                                     isLoading={isLoading}
                                                     button={
                                                         <Badge
+                                                            className="cursor-pointer"
                                                             variant="success">
                                                             Accept
                                                         </Badge>
@@ -90,7 +91,7 @@ export default function FriendRequest() {
                                                     isLoading={isLoading}
                                                     button={
                                                         <Badge
-                                                            className="bg-red-200 dark:bg-red-950 text-red-950 dark:text-red-500">
+                                                            className="bg-red-200 dark:bg-red-950 text-red-950 dark:text-red-500 cursor-pointer">
                                                             Decline
                                                         </Badge>
                                                     }

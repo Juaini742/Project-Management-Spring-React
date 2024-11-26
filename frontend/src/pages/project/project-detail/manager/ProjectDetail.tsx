@@ -1,89 +1,107 @@
-import MainTemplate from "@/components/template/MainTemplate.tsx";
-import {Button} from "@/components/ui/button.tsx";
 import {useNavigate, useParams} from "react-router-dom";
-import {ChevronsLeft, CloudUploadIcon, FileIcon, PaperclipIcon} from "lucide-react";
 import {useQuery} from "@tanstack/react-query";
 import {getProjectByIdEndpoint} from "@/lib/api.ts";
-import MembersTableItems from "../../member/MembersTableItems.tsx";
-import TaskProjectItems from "@/pages/project/task/TaskProjectItems.tsx";
-import {Skeleton} from "@/components/ui/skeleton.tsx";
+import MainTemplate from "@/components/template/MainTemplate.tsx";
 import {ScrollArea} from "@/components/ui/scroll-area.tsx";
-import {Card, CardContent} from "@/components/ui/card.tsx";
-import {Badge} from "@/components/ui/badge.tsx";
-import AssignedTask from "@/pages/project/project-detail/AssignedTask.tsx";
-import ProgressOverview from "@/pages/project/project-detail/ProgressOverview.tsx";
-import FieldUpload from "@/pages/project/project-detail/FieldUpload.tsx";
-import ActivityLog from "@/pages/project/project-detail/ActivityLog.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import {
+    ChevronsLeft, ClipboardList, Eye, Settings, User
+} from "lucide-react";
+import OverviewProjectDetail from "@/pages/project/project-detail/overview/OverviewProjectDetail.tsx";
+import {useState} from "react";
+import TaskProjectItems from "@/pages/project/project-detail/task/TaskProjectItems.tsx";
+import MembersTableItems from "@/pages/project/member/MembersTableItems.tsx";
+import EachElement from "@/components/EachElement.tsx";
+
+
+const tabItems = [
+    {
+        key: "overview",
+        label: "Overview",
+        icon: <Eye size={18}/>,
+        gradient: "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500",
+    },
+    {
+        key: "member",
+        label: "Member",
+        icon: <User size={18}/>,
+        gradient: "bg-gradient-to-r from-teal-400 via-green-400 to-lime-500",
+    },
+    {
+        key: "task",
+        label: "Task",
+        icon: <ClipboardList size={18}/>,
+        gradient: "bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500",
+    },
+    {
+        key: "setting",
+        label: "Setting",
+        icon: <Settings size={18}/>,
+        gradient: "bg-gradient-to-r from-red-500 via-rose-500 to-pink-500",
+    },
+];
+
 
 export default function ProjectDetail() {
     const {id} = useParams();
     const navigate = useNavigate();
-    const {data: project, isLoading} = useQuery({
+    const [activeTab, setActiveTab] = useState("overview");
+    const {data, isLoading} = useQuery({
         queryKey: ["project", id],
         queryFn: () => getProjectByIdEndpoint(id),
     });
+    const project = data?.data
+
 
     return (
         <MainTemplate>
             <ScrollArea className="h-[calc(100vh-20px)]">
-                <Button onClick={() => navigate(-1)} variant="secondary"
-                        className="absolute top-5 right-5 z-50 shadow-md">
-                    <ChevronsLeft/>
-                    Back
-                </Button>
-                <div className="p-0">
-                    {/* Banner Section */}
-                    <div
-                        className="relative w-full h-64 bg-gradient-to-r from-red-600 to-red-400 dark:from-red-800 dark:to-red-600">
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            {isLoading ? (
-                                <Skeleton className="h-10 w-[50%]"></Skeleton>
-                            ) : (
-                                <div className="text-center text-white px-6">
-                                    <h1 className="text-4xl font-bold">{project?.name ?? "Loading..."}</h1>
-                                    <p className="text-sm mt-2">
-                                        {project?.description ?? "No description available"}
-                                    </p>
-                                </div>
-                            )}
+                <div className="container">
+                    <div className="my-10 flex gap-2 items-center justify-between">
+                        {/* Tabs */}
+                        <div className="flex gap-2">
+                            <EachElement
+                                of={tabItems}
+                                render={({key, label, icon, gradient}) => (
+                                    <button
+                                        key={key}
+                                        onClick={() => setActiveTab(key)}
+                                        className={`${
+                                            activeTab === key
+                                                ? `${gradient} text-white shadow-lg`
+                                                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                                        } flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-300`}
+                                    >
+                                        {icon}
+                                        <span className="text-sm">{label}</span>
+                                    </button>
+                                )}
+                            />
                         </div>
+
+                        {/* Back Button */}
+                        <Button
+                            onClick={() => navigate(-1)}
+                            variant="secondary"
+                            className="sticky top-5 right-5 z-50 shadow-md flex items-center gap-2"
+                        >
+                            <ChevronsLeft/>
+                            Back
+                        </Button>
                     </div>
-
-                    {/* Content Section */}
-                    <div className="p-6">
-                        <div className="flex justify-between items-center mb-6">
-                            <p className="text-sm text-gray-600 dark:text-gray-300">
-                                Project ID: {project?.id}
-                            </p>
-
-                        </div>
-
-                        {/* Members Table */}
-                        <div className="mb-6">
-                            <MembersTableItems project={project} id={id}/>
-                        </div>
-
-                        {/* Tasks Section */}
-                        <div>
-                            <h2 className="text-xl font-semibold mb-4">Tasks</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                <TaskProjectItems id={id}/>
+                    <div>
+                        {activeTab === "overview" && <OverviewProjectDetail project={project} isLoading={isLoading}/>}
+                        {activeTab === "member" && <MembersTableItems project={project} id={id}/>}
+                        {activeTab === "task" && <TaskProjectItems id={id} project={project}/>}
+                        {activeTab === "setting" && (
+                            <div>
+                                <p>Settings content goes here</p>
                             </div>
-                        </div>
+                        )}
                     </div>
-                </div>
-
-                <div className="p-6 mb-10">
-                    {/* Assigned Tasks */}
-                    <AssignedTask/>
-                    {/* Progress Overview */}
-                    <ProgressOverview/>
-                    {/* file upload */}
-                    <FieldUpload/>
-                    {/* Activity Log */}
-                    <ActivityLog/>
                 </div>
             </ScrollArea>
         </MainTemplate>
+
     );
 }

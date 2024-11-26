@@ -29,7 +29,7 @@ function DeleteProjectButton({id}: { id: string }) {
             title="Are you sure, you want to delete this project?"
             desc="This action cannot be undone. This will permanently delete your project and remove your data from our servers."
             onDelete={onDelete}
-            button={<Button variant="outlineRed" className="h-9 w-10"><Trash2/></Button>}
+            button={<Button variant="destructive" className="h-9 w-10"><Trash2/></Button>}
         />
     );
 }

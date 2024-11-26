@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, String> {
 
-    @Query(value = "SELECT p FROM Project p WHERE p.created_by.id = :created_by")
+    @Query(value = "SELECT p FROM Project p WHERE p.createdBy.id = :created_by")
     List<Project> findAllByCreatedBy(String created_by);
 
     @Query("""

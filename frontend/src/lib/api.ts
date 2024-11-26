@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import {
-    authValues,
+    authValues, deleteMemberValues,
     FriendUpdate,
-    friendValues,
-    profileValues,
+    friendValues, PaginationStoreInterface,
+    profileValues, projectMemberUpdateValues,
     projectMemberValues,
-    projectValues
+    projectValues, SearchInterface, taskValues
 } from "@/lib/interfaces.ts";
 
 const PUBLIC_URL = "http://localhost:8080/api/public";
@@ -68,25 +68,18 @@ export const loginEndpoint = (formData: authValues) => {
 };
 
 // SECURED
-// POST
-export const logoutEndpoint = () => {
-    localStorage.removeItem("userId")
-    return POST(`${SECURED_URL}/user/logout`, null);
+// ==== POST ====
+
+
+// FRIEND
+
+
+export const taskPostEndpoint = (formData: taskValues) => {
+    return POST(`${SECURED_URL}/task`, formData);
 };
 
-export const friendPostEndpoint = (formData: friendValues) => {
-    return POST(`${SECURED_URL}/friend`, formData);
-};
-
-export const projectPostEndpoint = (formData: projectValues) => {
-    return POST(`${SECURED_URL}/project`, formData);
-};
-
-export const projectMemberPostEndpoint = (formData: projectMemberValues) => {
-    return POST(`${SECURED_URL}/project-member`, formData);
-};
-
-// GET
+// ==== SECURED ====
+// == USER ==
 export const getMeEndpoint = async () => {
     const user = await GET(`${SECURED_URL}/user/me`);
 
@@ -98,10 +91,13 @@ export const getMeEndpoint = async () => {
             return user
         }
     }
-
 };
 
-// USER
+export const logoutEndpoint = () => {
+    localStorage.removeItem("userId")
+    return POST(`${SECURED_URL}/user/logout`, null);
+};
+
 export const getAllUserNotFriendEndpoint = () => {
     return GET(`${SECURED_URL}/user/friend`);
 };
@@ -110,6 +106,15 @@ export const getAvailableUserForProjectEndpoint = (projectId: string) => {
     return GET(`${SECURED_URL}/user/available?userId=${localStorage.getItem("userId")}&projectId=${projectId}`);
 };
 
+// == PROFILE ==
+export const updateProfileEndpoint = (
+    formData: profileValues,
+    id: string | undefined
+) => {
+    return UPDATE(`${SECURED_URL}/profile/${id}`, formData);
+};
+
+// == FRIEND ==
 export const getAllUserFriendAccepted = () => {
     return GET(`${SECURED_URL}/friend/accepted`);
 };
@@ -118,7 +123,22 @@ export const getAllUserFriendPending = () => {
     return GET(`${SECURED_URL}/friend/pending`);
 };
 
-// PROJECT
+
+export const friendPostEndpoint = (formData: friendValues) => {
+    return POST(`${SECURED_URL}/friend`, formData);
+};
+
+export const updateFriendStatusEndpoint = (
+    formData: FriendUpdate,
+) => {
+    return UPDATE(`${SECURED_URL}/friend/status`, formData);
+};
+
+export const deleteFriendEndpoint = (id: string) => {
+    return DELETE(`${SECURED_URL}/friend/${id}`);
+};
+
+// == PROJECT ==
 export const getProjectByIdEndpoint = (id: string | undefined) => {
     return GET(`${SECURED_URL}/project/${id}/data`);
 };
@@ -127,28 +147,8 @@ export const getProjectByMemberId = () => {
     return GET(`${SECURED_URL}/project/member`);
 };
 
-
-export const getProjectByUser = () => {
-    return GET(`${SECURED_URL}/project`);
-};
-
-// MEMBER
-export const getMemberByProjectEndpoint = (id: string | undefined) => {
-    return GET(`${SECURED_URL}/project-member/${id}`);
-};
-
-// TASK
-export const getTaskProjectEndpoint = (id: string | undefined) => {
-    return GET(`${SECURED_URL}/task/project/${id}`);
-};
-
-
-// UPDATE
-export const updateProfileEndpoint = (
-    formData: profileValues,
-    id: string | undefined
-) => {
-    return UPDATE(`${SECURED_URL}/profile/${id}`, formData);
+export const projectPostEndpoint = (formData: projectValues) => {
+    return POST(`${SECURED_URL}/project`, formData);
 };
 
 export const updateProjectEndpoint = (
@@ -157,20 +157,59 @@ export const updateProjectEndpoint = (
 ) => {
     return UPDATE(`${SECURED_URL}/project/${id}`, formData);
 };
-export const updateFriendStatusEndpoint = (
-    formData: FriendUpdate,
-) => {
-    return UPDATE(`${SECURED_URL}/friend/status`, formData);
-};
 
-// DELETE
 export const deleteProjectEndpoint = (id: string) => {
     return DELETE(`${SECURED_URL}/project/${id}`);
 };
 
-export const deleteFriendEndpoint = (id: string) => {
-    return DELETE(`${SECURED_URL}/friend/${id}`);
+// export const getProjectByUser = () => {
+//     return GET(`${SECURED_URL}/project`);
+// };
+
+// == PROJECT MEMBER ==
+export const getMemberByProjectEndpoint = (id: string | undefined, search: SearchInterface, pagination: PaginationStoreInterface) => {
+    const queryParams: string[] = [];
+    if (search.name) {
+        queryParams.push(`name=${search.name}`);
+    }
+    if (search.email) {
+        queryParams.push(`email=${search.email}`);
+    }
+    if (search.role) {
+        queryParams.push(`role=${search.role}`);
+    }
+
+    if (pagination.page >= 0) {
+        queryParams.push(`page=${pagination.page}`);
+    }
+    queryParams.push(`size=${pagination.size}`);
+    const queryString = queryParams.join("&");
+    return GET(`${SECURED_URL}/project-member/${id}?${queryString}`);
 };
 
 
-// 'Droid Sans Mono', 'monospace', monospace
+export const projectMemberPostEndpoint = (formData: projectMemberValues) => {
+    return POST(`${SECURED_URL}/project-member`, formData);
+};
+
+export const updateMemberRoleEndpoint = (
+    formData: projectMemberUpdateValues,
+    id: string | undefined
+) => {
+    return UPDATE(`${SECURED_URL}/project-member/${id}`, formData);
+};
+
+export const deleteMemberEndpoint = (formData: deleteMemberValues) => {
+    return DELETE(`${SECURED_URL}/project-member?id=${formData.id}&projectId=${formData.projectId}`);
+};
+
+
+// == TASK ==
+export const getTaskProjectEndpoint = (id: string | undefined) => {
+    return GET(`${SECURED_URL}/task/project/${id}`);
+};
+
+export const deleteTaskEndpoint = (id: string | undefined) => {
+    return DELETE(`${SECURED_URL}/task/${id}`);
+}
+
